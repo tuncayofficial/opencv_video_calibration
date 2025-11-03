@@ -1,8 +1,6 @@
 import cv2 as cv
 import numpy as np
 import time
-import math
-import random
 
 # Import classes
 
@@ -10,17 +8,19 @@ from effects.calibrator import Calibrator
 from effects.color_chaos_manipulator import ColorChaosManipulator
 from functions.export_video import export_video_global
 
-VIDEO_PATH = 'assets/video_1.mp4'
+ASSETS_PATH = 'assets/'
 AUDIO_FILE = 'assets/worldwide.wav'
 
-capture = cv.VideoCapture(VIDEO_PATH)
-
 # Functions
-
 calibrator = Calibrator()
 cc_manipulator = ColorChaosManipulator()
 
+# I/O
+VIDEO_NAME_IO= str(input("Choose the video to process : "))
+VIDEO_PATH = ASSETS_PATH + VIDEO_NAME_IO + ".mp4"
 apply_calibration = str(input("Apply calibration? Y or N : "))
+
+capture = cv.VideoCapture(VIDEO_PATH)
 output_frames = []
 FRAME_ORDER = 0
 

@@ -46,5 +46,5 @@ class Calibrator:
         return cv.addWeighted(frame, 0.5, edges_bgr, 0.5, 0)
     
     def _simple_frame_effect(self, frame, complexity):
-        stylized = cv.stylization(frame, sigma_s=100, sigma_r=0.8) 
-        return stylized
+        alpha = 1.0 + math.sqrt((self.complexities.index(complexity)))
+        return cv.convertScaleAbs(frame, alpha=alpha, beta=10)
