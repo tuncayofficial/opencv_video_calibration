@@ -103,7 +103,7 @@ class ColorChaosManipulator:
     def sine_distortion(self, frame, time, wave_strength=10):
         h, w = frame.shape[:2]
     
-        y_coords, x_coords = np.indices((h, w))
+        y_coords, x_coords = np.indices((h, w)) # study this part when you wake up [ vectorized operations ]
         
         wave_x = np.sin(y_coords * 0.05 + time) * wave_strength
         wave_y = np.cos(x_coords * 0.05 + time) * wave_strength
