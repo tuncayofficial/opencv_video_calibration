@@ -18,8 +18,6 @@ def calculate_complexity(self, frame):
     return np.var(gray) # Variation method
 ```
 
-<img width="1024" height="1024" alt="ChatGPT Image 3 Kas 2025 23_52_07" src="https://github.com/user-attachments/assets/b89d8cde-1b8f-4383-a72d-f2275d0cac2a" />
-
 Mathematical Basis: Uses variance (σ²) to measure how "busy" a scene is:
 
 Low variance = Flat, uniform areas (simple effects)
