@@ -58,7 +58,6 @@ cc_manipulator = ColorChaosManipulator()
 
 def realtimeManipulation():
     ASSETS_PATH = 'assets/'
-    AUDIO_FILE = 'assets/worldwide.wav'
 
     # Functions
     calibrator = Calibrator()
@@ -142,15 +141,12 @@ def realtimeManipulation():
 
 def renderVideo():
     ASSETS_PATH = 'assets/'
-    AUDIO_FILE = 'assets/worldwide.wav'
     FILENAME = "video_" + str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + ".mp4"
     VIDEO_NAME_IO = input(str("Enter video name to process : "))
 
     capture = cv.VideoCapture(ASSETS_PATH + VIDEO_NAME_IO + ".mp4")
     calibrator = Calibrator()
     cc_manipulator = ColorChaosManipulator()
-
-    apply_calibration = str(input("Apply calibration? Y or N : "))
 
     output_frames = []
 
@@ -173,26 +169,19 @@ def renderVideo():
             fps = frame_count / elapsed if elapsed > 0 else 0
             print(f"📊 Processed {frame_count} frames ({fps:.1f} fps)")
         
-        
-        
-        if apply_calibration == "Y" or apply_calibration == "y":
-            if hasattr(args, "effects") and "Calibrator" in args.effects:
-                complexity = calibrator.calculate_complexity(frame)
+        if hasattr(args, "effects") and "Calibrator" in args.effects:
+            complexity = calibrator.calculate_complexity(frame)
 
-                calibrator.add_frame(frame)
-                processed_calibrator_frame = calibrator.process_current_frame(frame)
-                output_frames.append(processed_calibrator_frame)
+            calibrator.add_frame(frame)
+            processed_calibrator_frame = calibrator.process_current_frame(frame)
+            output_frames.append(processed_calibrator_frame)
             
-            if hasattr(args, "effects") and "ColorChaosManipulator" in args.effects:
-                complexity = cc_manipulator.calculate_complexity(frame)
+        if hasattr(args, "effects") and "ColorChaosManipulator" in args.effects:
+            complexity = cc_manipulator.calculate_complexity(frame)
 
-                cc_manipulator.add_frame(frame)
-                processed_cc_manipulator_frame = cc_manipulator.process_current_frame(frame, complexity)
-                output_frames.append(processed_cc_manipulator_frame)
-            
-        elif apply_calibration == "N" or apply_calibration == "n":
             cc_manipulator.add_frame(frame)
-            output_frames.append(frame)
+            processed_cc_manipulator_frame = cc_manipulator.process_current_frame(frame, complexity)
+            output_frames.append(processed_cc_manipulator_frame)
             
         else:
             print("Undefined argument.")
