@@ -17,6 +17,7 @@ def calculate_complexity(self, frame):
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     return np.var(gray) # Variation method
 ```
+
 Mathematical Basis: Uses variance (σ²) to measure how "busy" a scene is:
 
 Low variance = Flat, uniform areas (simple effects)
