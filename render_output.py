@@ -1,22 +1,16 @@
 import cv2 as cv
 import numpy as np
 import time
-import simpleaudio as sa
 
 # Import classes
 from effects.calibrator import Calibrator
 from effects.color_chaos_manipulator import ColorChaosManipulator
 from functions.export_video import export_video_global
 
-VIDEO_PATH = 'assets/example.mp4'
+VIDEO_PATH = 'assets/video_1_trimmed.mp4'
 AUDIO_FILE = 'assets/worldwide.wav'
 
 capture = cv.VideoCapture(VIDEO_PATH)
-
-def play_audio(audio_file):
-    wave_obj = sa.WaveObject.from_wave_file(AUDIO_FILE)
-    play_obj = wave_obj.play()
-
 calibrator = Calibrator()
 cc_manipulator = ColorChaosManipulator()
 
@@ -32,7 +26,8 @@ start_time = time.time()
 
 while True:
     isTrue, frame = capture.read()  
-    
+    fps_cv = capture.get(cv.CAP_PROP_FPS)
+
     if not isTrue: 
         break
     
@@ -49,12 +44,11 @@ while True:
     if apply_calibration == "Y" or apply_calibration == "y":
         calibrator.add_frame(frame)
         processed_frame = calibrator.process_current_frame(frame)
-        final_frame = cc_manipulator.process_current_frame(processed_frame, complexity)
-        output_frames.append(final_frame)
+        output_frames.append(processed_frame)
         
     elif apply_calibration == "N" or apply_calibration == "n":
         calibrator.add_frame(frame)
-        output_frames.append(frame)  # Just store original frame
+        output_frames.append(frame)
         
     else:
         print("Undefined argument.")
@@ -62,14 +56,13 @@ while True:
 
 capture.release()
 
-# Export results
 if output_frames:
     total_time = time.time() - start_time
     print(f"✅ Processed {len(output_frames)} frames in {total_time:.2f}s")
     print(f"📹 Exporting at {len(output_frames)/total_time:.1f} fps...")
-    export_video_global(output_frames, "ferhad.mp4")
-    print("🎬 Video exported: ferhad.mp4")
+    export_video_global(output_frames, "osamason.mp4", fps_cv)
+    print("🎬 Video exported: osamason.mp4")
 else:
     print("❌ No frames processed!")
 
-print("🎉 Done! Open ferhad.mp4 to see your masterpiece!")
+print("🎉 Done! Open osamason.mp4 to see your masterpiece!")

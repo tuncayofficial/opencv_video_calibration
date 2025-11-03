@@ -3,26 +3,23 @@ import numpy as np
 import time
 import math
 import random
-import simpleaudio as sa
 
 class Calibrator:
     def __init__(self):
         self.frames = []
         self.processed_frames = []
-        self.complexity = []
+        self.complexities = []
         self.threshold = None
         self.start_time = time.time()
-        self.effect_history = []
-        self.color_palettes = []
 
     def add_frame(self, frame):
         self.frames.append(frame)
         complexity = self.calculate_complexity(frame)
-        self.complexity.append(complexity)
+        self.complexities.append(complexity)
 
-        if len(self.complexity) > 10 and self.threshold is None:
-            self.threshold = np.median(self.complexity)
-            print("Current ColorChaosManipulator threshold has set to " + str(self.threshold))
+        if len(self.complexities) > 10 and self.threshold == None:
+            self.threshold = np.median(self.complexities)
+            print("Current Calibrator threshold has set to " + str(self.threshold))
 
     def calculate_complexity(self, frame):
         small = cv.resize(frame, (160, 90))
@@ -44,7 +41,7 @@ class Calibrator:
             return self._simple_frame_effect(frame, complexity)
 
     def _complex_frame_effect(self, frame, complexity):
-        edges = cv.Canny(frame, 50, 150)
+        edges = cv.Canny(frame, 100, 200)
         edges_bgr = cv.cvtColor(edges, cv.COLOR_GRAY2BGR)
         return cv.addWeighted(frame, 0.5, edges_bgr, 0.5, 0)
     

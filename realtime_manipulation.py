@@ -3,7 +3,6 @@ import numpy as np
 import time
 import math
 import random
-import simpleaudio as sa
 
 # Import classes
 
@@ -11,24 +10,19 @@ from effects.calibrator import Calibrator
 from effects.color_chaos_manipulator import ColorChaosManipulator
 from functions.export_video import export_video_global
 
-VIDEO_PATH = 'assets/example.mp4'
+VIDEO_PATH = 'assets/video_1.mp4'
 AUDIO_FILE = 'assets/worldwide.wav'
 
 capture = cv.VideoCapture(VIDEO_PATH)
 
 # Functions
 
-def play_audio(audio_file):
-    wave_obj = sa.WaveObject.from_wave_file(AUDIO_FILE)
-    play_obj = wave_obj.play()
-
 calibrator = Calibrator()
 cc_manipulator = ColorChaosManipulator()
 
 apply_calibration = str(input("Apply calibration? Y or N : "))
-
-play_audio(AUDIO_FILE)
 output_frames = []
+FRAME_ORDER = 0
 
 while True:
     isTrue, frame = capture.read()  
@@ -36,7 +30,7 @@ while True:
     fps_cv = capture.get(cv.CAP_PROP_FPS)
     fps = len(calibrator.frames) // elapsed_time if elapsed_time > 0 else 0
     complexity = calibrator.calculate_complexity(frame)
-
+    
     if not isTrue: 
         break
     
@@ -57,14 +51,10 @@ while True:
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         
         calibrator.add_frame(frame)
-        
-        for frame in calibrator.frames:
-            processed_calibrator_frame = calibrator.process_current_frame(frame)
-
-            complexity = cc_manipulator.calculate_complexity(frame)
-            for processed_calibrator_frame in calibrator.processed_frames:
-                output_frames.append(cc_manipulator.process_current_frame(processed_calibrator_frame, complexity))
-
+        processed_calibrator_frame = calibrator.process_current_frame(frame)
+        print("Processed frame number " + str(FRAME_ORDER))
+        cv.imshow("PROCESSED VIDEO", processed_calibrator_frame)
+        FRAME_ORDER += 1
 
     elif apply_calibration == "N" or apply_calibration == "n":
         cv.putText(frame, "TIME PASSED : " + str(round(elapsed_time, 2)) + " SECONDS", (50, 50), 
@@ -81,9 +71,5 @@ while True:
         break
     if cv.waitKey(20) & 0xFF == ord('d'):
         break
-
-capture.release()
-
-export_video_global(output_frames, "ferhad.mp4")
 
 cv.destroyAllWindows()

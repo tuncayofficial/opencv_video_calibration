@@ -6,11 +6,12 @@ import numpy as np
 class ColorChaosManipulator:
     def __init__(self):
         self.frames = []
-        self.manipulated_frames = []
+        self.processed_frames = []
         self.complexities = []
         self.threshold = None
         self.color_palettes = []
         self.effect_history = []
+        self._generate_color_palettes()
 
     def _generate_color_palettes(self):
         self.color_palettes = [
@@ -41,25 +42,29 @@ class ColorChaosManipulator:
             print("Current ColorChaosManipulator threshold has set to " + str(self.threshold))
 
     def process_current_frame(self, frame, complexity):
-        if self.threshold is None:
-            cv.putText(frame, "EVALUATING VISUALS...", (50, 150), 
-            cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-            return frame
+        if self.threshold is None:  
+            cv.putText(frame, "CALIBRATING...", (50, 50), 
+                  cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            return frame 
+        
         
         complexity = self.calculate_complexity(frame)
-
-        if complexity > self.threshold :
-            return self._complex_effect_frame(frame, complexity)
-        else :
-            return self._simple_effect_frame(frame, complexity)
+        self.processed_frames.append(frame)  
+        
+        if complexity > self.threshold:
+            return self._color_blast(frame, complexity)
+        else:
+            return self._channel_swap(frame)
         
     def _complex_frame_effect(self, frame, complexity):
+        """
         effect_type = random.choice([
             'channel_swap', 'color_blast', 'neon_edges', 
             'hue_shift', 'rgb_split', 'psychedelic'
         ])
+        """
 
-        effect_type = "channel_swap"
+        effect_type = "color_blast"
 
         match effect_type:
             case "channel_swap":
@@ -82,9 +87,11 @@ class ColorChaosManipulator:
         return swapped_channels
     
     def _color_blast(self, frame, complexity):
-        intensity = min(0.5, complexity / (self.threshold * 2))
+        intensity = min(0.8, complexity / (self.threshold * 2))
 
         color = [random.randint(0, 255) for _ in range(3)]
         overlay = np.full_like(frame, color)
+
+        print("Applying color blast...")
 
         return cv.addWeighted(frame, 1 - intensity, overlay, intensity, 0)
