@@ -122,7 +122,7 @@ class ColorChaosManipulator:
 
         return cv.merge([b_shifted, g_shifted, r_shifted])
     
-    def kaleidoscope(self, frame, num_segments=6):
+    def kaleidoscope(self, frame, num_segments=6): # also study this part too, why not to vectorize segments in order to process frames???
         h, w = frame.shape[:2]
         center_x, center_y = w // 2, h // 2
 
