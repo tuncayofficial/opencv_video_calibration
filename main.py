@@ -40,6 +40,13 @@ parser.add_argument(
     help="🎬 Render video files with visual artifacts"
 )
 
+parser.add_argument(
+    "-effects", "--effects", 
+    nargs='+',
+    choices=['Calibrator','ColorChaosManipulator'], 
+    help="🎬 Choose effects to be applied"
+)
+
 args = parser.parse_args()
 
 # ---------------------- Definitions of effects below here ----------------------
@@ -150,14 +157,22 @@ def renderVideo():
             fps = frame_count / elapsed if elapsed > 0 else 0
             print(f"📊 Processed {frame_count} frames ({fps:.1f} fps)")
         
-        complexity = cc_manipulator.calculate_complexity(frame)
+        
         
         if apply_calibration == "Y" or apply_calibration == "y":
-            calibrator.add_frame(frame)
-            processed_calibrator_frame = calibrator.process_current_frame(frame)
-            cc_manipulator.add_frame(processed_calibrator_frame)
-            processed_cc_manipulator_frame = cc_manipulator.process_current_frame(processed_calibrator_frame, complexity)
-            output_frames.append(processed_cc_manipulator_frame)
+            if hasattr(args, "effects") and "Calibrator" in args.effects:
+                complexity = calibrator.calculate_complexity(frame)
+
+                calibrator.add_frame(frame)
+                processed_calibrator_frame = calibrator.process_current_frame(frame)
+                output_frames.append(processed_calibrator_frame)
+            
+            if hasattr(args, "effects") and "ColorChaosManipulator" in args.effects:
+                complexity = cc_manipulator.calculate_complexity(frame)
+
+                cc_manipulator.add_frame(frame)
+                processed_cc_manipulator_frame = cc_manipulator.process_current_frame(frame, complexity)
+                output_frames.append(processed_cc_manipulator_frame)
             
         elif apply_calibration == "N" or apply_calibration == "n":
             cc_manipulator.add_frame(frame)
@@ -182,7 +197,7 @@ def renderVideo():
 
 # ---------------------- Parsing args below here ----------------------
 
-if hasattr(args, "rtm") and args.rtm == "enable":
+if hasattr(args, "realtime") and args.realtime == "enable":
     realtimeManipulation()
 elif hasattr(args, "render") and args.render == "enable":
     renderVideo()

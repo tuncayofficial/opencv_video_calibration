@@ -79,14 +79,14 @@ class ColorChaosManipulator:
     
     def _color_blast(self, frame, complexity):
         intensity = min(0.3, complexity / (self.threshold * 8))
-
-        color = [random.randint(0, 255) for _ in range(3)]
-        overlay = np.full_like(frame, color)
-
-        return cv.addWeighted(frame, 1 - intensity, overlay, intensity, 0)
+    
+        color = np.array([random.randint(0, 255) for _ in range(3)], dtype=np.uint8)
+        
+        result = frame.astype(np.float32) * (1 - intensity) + color * intensity
+        return result.astype(np.uint8)
     
 
-    # Defining Psychedelic concepts from here
+    # ------------------- Defining Psychedelic concepts from here ------------------- 
 
     def hue_shift(self, frame, shift_amount):
         hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
@@ -102,24 +102,16 @@ class ColorChaosManipulator:
     
     def sine_distortion(self, frame, time, wave_strength=10):
         h, w = frame.shape[:2]
-        result = np.zeros_like(frame)
-
-        frequency = random.uniform(0, 1)
-
-        for y in range(h):
-            for x in range(w):
-                wave_x = math.sin(y * frequency + time) * wave_strength
-                wave_y = math.cos(x * frequency + time) * wave_strength
-
-                new_x = int(x + wave_x)
-                new_y = int(y + wave_y)
-
-                new_x = max(0, min(w-1, new_x))
-                new_y = max(0, min(h-1, new_y)) 
-
-                result[y, x] = frame[new_y, new_x]
-
-        return result
+    
+        y_coords, x_coords = np.indices((h, w))
+        
+        wave_x = np.sin(y_coords * 0.05 + time) * wave_strength
+        wave_y = np.cos(x_coords * 0.05 + time) * wave_strength
+        
+        new_x = np.clip(x_coords + wave_x, 0, w-1).astype(np.int32)
+        new_y = np.clip(y_coords + wave_y, 0, h-1).astype(np.int32)
+        
+        return frame[new_y, new_x]
     
     def rgb_split(self, frame, offset):
         b, g, r = cv.split(frame)

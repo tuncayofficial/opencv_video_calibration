@@ -49,9 +49,7 @@ while True:
     if apply_calibration == "Y" or apply_calibration == "y":
         calibrator.add_frame(frame)
         processed_calibrator_frame = calibrator.process_current_frame(frame)
-        cc_manipulator.add_frame(processed_calibrator_frame)
-        processed_cc_manipulator_frame = cc_manipulator.process_current_frame(processed_calibrator_frame, complexity)
-        output_frames.append(processed_cc_manipulator_frame)
+        output_frames.append(processed_calibrator_frame)
         
     elif apply_calibration == "N" or apply_calibration == "n":
         cc_manipulator.add_frame(frame)
@@ -67,7 +65,7 @@ if output_frames:
     total_time = time.time() - start_time
     print(f"✅ Processed {len(output_frames)} frames in {total_time:.2f}s")
     print(f"📹 Exporting at {len(output_frames)/total_time:.1f} fps...")
-    render_processor(output_frames, "../build/" + FILENAME, fps_cv)
+    renderProcessor(output_frames, "../build/" + FILENAME, fps_cv)
     print("🎬 Video exported: " + FILENAME)
 else:
     print("❌ No frames processed!")
