@@ -1,15 +1,15 @@
 # OpenCV Video Calibration
 
-A real-time video processing system that applies computer vision techniques and psychedelic effects using mathematical transformations. Transform your webcam feed into a trippy visual experience! 🌈✨
+A real-time video processing system that applies computer vision techniques and psychedelic effects using mathematical transformations. Transform your webcam feed into a trippy visual experience!
 
-## 🌟 Features
+## Features
 
-• 🎥 Real-time Video Processing - Live webcam feed manipulation
-• ⚡ Auto-calibration - Dynamic threshold detection based on scene complexity
-• 🌊 Psychedelic Effects - Mathematical transformations for trippy visuals
-• 🧩 Modular Architecture - Easy to extend with new effects
+• Real-time Video Processing - Live webcam feed manipulation
+• Auto-calibration - Dynamic threshold detection based on scene complexity
+• Psychedelic Effects - Mathematical transformations for trippy visuals
+• Modular Architecture - Easy to extend with new effects
 
-## 🧮 Mathematical Foundations
+## Mathematical Foundations
 
 ## Complexity Calculation
 ```python
@@ -64,7 +64,7 @@ def hue_shift(self, frame, shift_amount):
         return cv.cvtColor(hsv, cv.COLOR_HSV2BGR)
 ```
 
-## 🚀 Installation
+## Installation
 In order to use the library, you need to clone the repository :
 
 ```bash
@@ -78,20 +78,20 @@ cd opencv_video_calibration
 pip install -r requirements.txt
 ```
 
-## 🎯 Quick Start
-### Real-Time Video Processing 🎥
+## Quick Start
+### Real-Time Video Processing
 ```bash
 python main.py -rtm enable --effects ColorChaosManipulator
 ```
 _Process video files with live preview and real-time effects!_
 
-### Video Rendering & Export 🎬
+### Video Rendering & Export
 ```bash
 python main.py -render enable --effects Calibrator
 ```
 _Render video files with mathematical transformations and export results_
 
-## 🔮 Coming Soon
+## Coming Soon
 • Webcam Support - Live camera feed processing
 
 • More Effects - Expanded mathematical transformations
