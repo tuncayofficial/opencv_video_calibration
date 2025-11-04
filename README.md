@@ -85,6 +85,12 @@ python main.py -rtm enable --effects ColorChaosManipulator
 ```
 _Process video files with live preview and real-time effects!_
 
+## Example videos
+
+
+https://github.com/user-attachments/assets/58e1919e-b81e-4613-a0fc-8b1fd29a216b
+
+
 ### Video Rendering & Export
 ```bash
 python main.py -render enable --effects Calibrator
