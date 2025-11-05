@@ -10,7 +10,7 @@ from effects.calibrator import Calibrator
 from effects.color_chaos_manipulator import ColorChaosManipulator
 from effects.vhs import VHS
 
-from functions.render_processor import renderProcessor
+from processors.render_processor import RenderProcessor
 
 def realtimeManipulation(args):
     ASSETS_PATH = 'assets/'

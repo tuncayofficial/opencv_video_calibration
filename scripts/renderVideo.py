@@ -12,7 +12,7 @@ from effects.color_chaos_manipulator import ColorChaosManipulator
 from effects.vhs import VHS
 
 # ------------------- Importing functions from here -------------------
-from functions.render_processor import renderProcessor
+from processors.render_processor import RenderProcessor
 
 def renderVideo(args):
     ASSETS_PATH = 'assets/'
@@ -26,9 +26,13 @@ def renderVideo(args):
 
     capture = cv.VideoCapture(ASSETS_PATH + VIDEO_NAME_IO + ".mp4")
 
+    # ------------------- Initialize effects from here -------------------
     calibrator = Calibrator()
     cc_manipulator = ColorChaosManipulator()
     vhs = VHS()
+
+    # ------------------- Initialize processors from here -------------------
+    renderProcessor = RenderProcessor()
 
     output_frames = []
 
@@ -86,7 +90,7 @@ def renderVideo(args):
         total_time = time.time() - start_time
         print(f"✅ Processed {len(output_frames)} frames in {total_time:.2f}s")
         print(f"📹 Exporting at {len(output_frames)/total_time:.1f} fps...")
-        renderProcessor(output_frames, "build/" + FILENAME, fps_cv)
+        renderProcessor.renderFrames(output_frames, "build/" + FILENAME, fps_cv)
         print("🎬 Video exported: " + FILENAME)
     else:
         print("❌ No frames processed!")
