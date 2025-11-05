@@ -91,6 +91,7 @@ _Process video files with live preview and real-time effects!_
 
 https://github.com/user-attachments/assets/58e1919e-b81e-4613-a0fc-8b1fd29a216b
 
+https://github.com/user-attachments/assets/75188db6-257a-4475-a168-b8c660de6da3
 
 ### Video Rendering & Export
 ```bash
