@@ -7,7 +7,7 @@ import sys
 from datetime import datetime
 
 # ------------------- Importing effects from here -------------------
-from effects.calibrator import Calibrator
+from effects.tracker import Tracker
 from effects.color_chaos_manipulator import ColorChaosManipulator
 from effects.vhs import VHS
 
@@ -27,7 +27,7 @@ def renderVideo(args):
     capture = cv.VideoCapture(ASSETS_PATH + VIDEO_NAME_IO + ".mp4")
 
     # ------------------- Initialize effects from here -------------------
-    calibrator = Calibrator()
+    tracker = Tracker()
     cc_manipulator = ColorChaosManipulator()
     vhs = VHS()
 
@@ -57,12 +57,12 @@ def renderVideo(args):
             print(f"📊 Processed {frame_count} frames ({fps:.1f} fps)")
         
         if hasattr(args, "effects"):
-            if "Calibrator" in args.effects:
-                complexity = calibrator.calculate_complexity(frame)
+            if "Tracker" in args.effects:
+                complexity = tracker.calculate_complexity(frame)
 
-                calibrator.add_frame(frame)
-                processed_calibrator_frame = calibrator.process_current_frame(frame)
-                rgb_frame = cv.cvtColor(processed_calibrator_frame, cv.COLOR_BGR2RGB)
+                tracker.add_frame(frame)
+                processed_tracker_frame = tracker.process_current_frame(frame)
+                rgb_frame = cv.cvtColor(processed_tracker_frame, cv.COLOR_BGR2RGB)
                 output_frames.append(rgb_frame)
             
             elif "ColorChaosManipulator" in args.effects:

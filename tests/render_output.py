@@ -8,9 +8,9 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import classes
-from effects.calibrator import Calibrator
+from effects.tracker import Tracker
 from effects.color_chaos_manipulator import ColorChaosManipulator
-from functions.render_processor import renderProcessor
+from processors.render_processor import RenderProcessor
 
 ASSETS_PATH = '../assets/'
 AUDIO_FILE = 'assets/worldwide.wav'
@@ -18,8 +18,11 @@ FILENAME = "video_" + str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + ".mp4"
 VIDEO_NAME_IO = input(str("Enter video name to process : "))
 
 capture = cv.VideoCapture(ASSETS_PATH + VIDEO_NAME_IO + ".mp4")
-calibrator = Calibrator()
+
+tracker = Tracker()
 cc_manipulator = ColorChaosManipulator()
+
+renderProcessor = RenderProcessor()
 
 apply_calibration = str(input("Apply calibration? Y or N : "))
 
@@ -47,9 +50,9 @@ while True:
     complexity = cc_manipulator.calculate_complexity(frame)
     
     if apply_calibration == "Y" or apply_calibration == "y":
-        calibrator.add_frame(frame)
-        processed_calibrator_frame = calibrator.process_current_frame(frame)
-        output_frames.append(processed_calibrator_frame)
+        tracker.add_frame(frame)
+        processed_tracker_frame = tracker.process_current_frame(frame)
+        output_frames.append(processed_tracker_frame)
         
     elif apply_calibration == "N" or apply_calibration == "n":
         cc_manipulator.add_frame(frame)
@@ -65,7 +68,7 @@ if output_frames:
     total_time = time.time() - start_time
     print(f"✅ Processed {len(output_frames)} frames in {total_time:.2f}s")
     print(f"📹 Exporting at {len(output_frames)/total_time:.1f} fps...")
-    renderProcessor(output_frames, "../build/" + FILENAME, fps_cv)
+    renderProcessor.renderFrames(output_frames, "../build/" + FILENAME, fps_cv)
     print("🎬 Video exported: " + FILENAME)
 else:
     print("❌ No frames processed!")

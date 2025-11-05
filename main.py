@@ -5,7 +5,7 @@ import subprocess
 import sys
 from datetime import datetime
 
-from effects.calibrator import Calibrator
+from effects.tracker import Tracker
 from effects.color_chaos_manipulator import ColorChaosManipulator
 from processors.render_processor import RenderProcessor
 
@@ -46,7 +46,7 @@ parser.add_argument(
 parser.add_argument(
     "-effects", "--effects", 
     nargs='+',
-    choices=['Calibrator','ColorChaosManipulator', 'VHS'], 
+    choices=['Tracker','ColorChaosManipulator', 'VHS'], 
     help="Choose effects to be applied"
 )
 
@@ -54,7 +54,7 @@ args = parser.parse_args()
 
 # ---------------------- Definitions of effects below here ----------------------
 
-calibrator = Calibrator()
+tracker = Tracker()
 cc_manipulator = ColorChaosManipulator()
 
 # ---------------------- Implementations of tests below here ----------------------

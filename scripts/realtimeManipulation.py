@@ -6,7 +6,7 @@ import sys
 import os
 from datetime import datetime
 
-from effects.calibrator import Calibrator
+from effects.tracker import Tracker
 from effects.color_chaos_manipulator import ColorChaosManipulator
 from effects.vhs import VHS
 
@@ -16,7 +16,7 @@ def realtimeManipulation(args):
     ASSETS_PATH = 'assets/'
 
     # Effects
-    calibrator = Calibrator()
+    tracker = Tracker()
     cc_manipulator = ColorChaosManipulator()
     vhs = VHS()
 
@@ -69,32 +69,32 @@ def realtimeManipulation(args):
             cv.imshow("PROCESSED VIDEO", processed_cc_manipulator_frame)
             FRAME_ORDER += 1
 
-        elif hasattr(args, "effects") and "Calibrator" in args.effects:
-            complexity = calibrator.calculate_complexity(frame)
+        elif hasattr(args, "effects") and "Tracker" in args.effects:
+            complexity = tracker.calculate_complexity(frame)
 
-            if calibrator.threshold is not None :
+            if tracker.threshold is not None :
                 cv.putText(frame, "TIME PASSED : " + str(round(elapsed_time, 2)) + " SECONDS", (50, 50), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 cv.putText(frame, "FPS : " + str(round(fps_cv, 2)), (50, 100), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 cv.putText(frame, "COMPLEXITY : " + str(round(complexity, 2)), (50, 150), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                cv.putText(frame, "THRESHOLD : " + str(round(calibrator.threshold, 2)), (50, 200), 
+                cv.putText(frame, "THRESHOLD : " + str(round(tracker.threshold, 2)), (50, 200), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 cv.putText(frame, "VHS EFFECT", (50, 350), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
                 
-                if complexity > calibrator.threshold :
+                if complexity > tracker.threshold :
                     cv.putText(frame, "CALIBRATED FRAME", (50, 300), 
                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
                 else :
                     cv.putText(frame, "UNPROCESSED FRAME", (50, 300), 
                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         
-            calibrator.add_frame(frame)
-            processed_calibrator_frame = calibrator.process_current_frame(frame)
+            tracker.add_frame(frame)
+            processed_tracker_frame = tracker.process_current_frame(frame)
             print("Processed frame number " + str(FRAME_ORDER))
-            cv.imshow("PROCESSED VIDEO", processed_calibrator_frame)
+            cv.imshow("PROCESSED VIDEO", processed_tracker_frame)
             FRAME_ORDER += 1
 
         elif hasattr(args, "effects") and "VHS" in args.effects:

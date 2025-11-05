@@ -4,7 +4,7 @@ import time
 import math
 import random
 
-class Calibrator:
+class Tracker:
     def __init__(self):
         self.frames = []
         self.processed_frames = []
@@ -19,7 +19,7 @@ class Calibrator:
 
         if len(self.complexities) > 10 and self.threshold == None:
             self.threshold = np.mean(self.complexities)
-            print("Current Calibrator threshold has set to " + str(self.threshold))
+            print("Current Tracker threshold has set to " + str(self.threshold))
 
     def calculate_complexity(self, frame):
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -44,9 +44,8 @@ class Calibrator:
     def _complex_frame_effect(self, frame, complexity):
         edges = cv.Canny(frame, 50, 150)
 
-        h, w = edges.shape[:2]
-
         edges_rgb = cv.cvtColor(edges, cv.COLOR_GRAY2RGB)
+        
         r_channel = random.randint(0, 255)
         g_channel = random.randint(0, 255)
         b_channel = random.randint(0, 255)
