@@ -43,7 +43,7 @@ class VHS:
         if complexity > self.threshold:
             return self._apply_vhs(frame)
         else:
-            return self._color_bleeding(frame)
+            return self._vhs_head_clog(frame)
         
 
     def _scan_lines(self, frame):
@@ -64,8 +64,59 @@ class VHS:
                 b[i] = np.roll(b[i], -3)
     
         return cv.merge([b, g, r])
+    
+    def _vhs_noise(self, frame):
+        h, w = frame.shape[:2]
+        
+        random_height = random.randint(0, h-1)
+        random_width = random.randint(0, w-1)
+
+        radius = random.randint(2, 8)
+
+        # applying the gaussian method from here
+
+        for i in range(max(0, random_height - radius), min(h, random_height+radius)):
+            for j in range(max(0, random_width - radius), min(w, random_width+radius)):
+
+                distance = math.sqrt((i - random_height)**2 + (j - random_width)**2)
+                probability = max(0, 1 - distance/5)
+
+                if random.random() < probability:
+                    frame[i, j] = np.random.randint(0, 255, 3)
+
+        return frame
+        
+    def _vhs_glitch(self, frame):
+        h, w = frame.shape[:2]
+
+        for i in range(h):
+            r_channel = random.randint(0, 255)
+            g_channel = random.randint(0, 255)
+            b_channel = random.randint(0, 255)
+
+            for j in range(w):
+                frame[i, j] = [r_channel, g_channel, b_channel]
+
+        return frame
+    
+    def _vhs_head_clog(self, frame):
+        h, w = frame.shape[:2]
+        current_index = len(self.processed_frames)
+    
+        if current_index > 0 and random.random() < 0.8:
+            previous_frame = self.processed_frames[current_index - 1]
+            
+            mix_ratio = random.uniform(0.3, 0.8)
+            frame = cv.addWeighted(frame, 1-mix_ratio, previous_frame, mix_ratio, 0)
+            
+            cv.putText(frame, "HEAD CLOG!", (50, 500), 
+                    cv.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        
+        return frame
 
     def _apply_vhs(self, frame):
         frame = self._scan_lines(frame)
         frame = self._color_bleeding(frame)
+        frame = self._vhs_noise(frame)
+
         return frame  

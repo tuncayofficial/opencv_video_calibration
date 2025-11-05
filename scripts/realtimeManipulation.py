@@ -33,7 +33,6 @@ def realtimeManipulation(args):
         fps_cv = capture.get(cv.CAP_PROP_FPS)
         fps = len(cc_manipulator.frames) // elapsed_time if elapsed_time > 0 else 0
 
-        
         if not isTrue: 
             break
         
@@ -47,14 +46,16 @@ def realtimeManipulation(args):
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 cv.putText(frame, "COMPLEXITY : " + str(round(complexity, 2)), (50, 150), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                cv.putText(frame, "PSYCHEDELIC EFFECT", (50, 300), 
+                cv.putText(frame, "THRESHOLD : " + str(round(cc_manipulator.threshold, 2)), (50, 200), 
+                    cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                cv.putText(frame, "VHS EFFECT", (50, 350), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
                 
-                if complexity > cc_manipulator.threshold :
-                    cv.putText(frame, "CALIBRATED FRAME", (50, 200), 
+                if complexity > vhs.threshold :
+                    cv.putText(frame, "CALIBRATED FRAME", (50, 300), 
                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
                 else :
-                    cv.putText(frame, "UNPROCESSED FRAME", (50, 200), 
+                    cv.putText(frame, "UNPROCESSED FRAME", (50, 300), 
                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             
             cc_manipulator.add_frame(frame)
@@ -73,14 +74,16 @@ def realtimeManipulation(args):
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 cv.putText(frame, "COMPLEXITY : " + str(round(complexity, 2)), (50, 150), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                cv.putText(frame, "TRACKER EFFECT", (50, 300), 
+                cv.putText(frame, "THRESHOLD : " + str(round(calibrator.threshold, 2)), (50, 200), 
+                    cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                cv.putText(frame, "VHS EFFECT", (50, 350), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
                 
-                if complexity > calibrator.threshold :
-                    cv.putText(frame, "CALIBRATED FRAME", (50, 200), 
+                if complexity > vhs.threshold :
+                    cv.putText(frame, "CALIBRATED FRAME", (50, 300), 
                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
                 else :
-                    cv.putText(frame, "UNPROCESSED FRAME", (50, 200), 
+                    cv.putText(frame, "UNPROCESSED FRAME", (50, 300), 
                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         
             calibrator.add_frame(frame)
@@ -99,14 +102,16 @@ def realtimeManipulation(args):
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 cv.putText(frame, "COMPLEXITY : " + str(round(complexity, 2)), (50, 150), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                cv.putText(frame, "VHS EFFECT", (50, 300), 
+                cv.putText(frame, "THRESHOLD : " + str(round(vhs.threshold, 2)), (50, 200), 
+                    cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                cv.putText(frame, "VHS EFFECT", (50, 350), 
                     cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
                 
                 if complexity > vhs.threshold :
-                    cv.putText(frame, "CALIBRATED FRAME", (50, 200), 
+                    cv.putText(frame, "CALIBRATED FRAME", (50, 300), 
                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
                 else :
-                    cv.putText(frame, "UNPROCESSED FRAME", (50, 200), 
+                    cv.putText(frame, "UNPROCESSED FRAME", (50, 300), 
                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             
             vhs.add_frame(frame)
