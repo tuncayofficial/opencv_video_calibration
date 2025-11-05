@@ -15,7 +15,8 @@ A real-time video processing system that applies computer vision techniques and 
 ```python
 def calculate_complexity(self, frame):
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-    return np.var(gray) # Variation method
+    variance = np.var(gray) # Variation method
+    return np.log1p(variance)
 ```
 
 Mathematical Basis: Uses variance (σ²) to measure how "busy" a scene is:
