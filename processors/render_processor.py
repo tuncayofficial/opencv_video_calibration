@@ -14,8 +14,10 @@ class RenderProcessor:
 
         height, width = frames[0].shape[:2]
         
-        fourcc = cv.VideoWriter_fourcc(*'mp4v')
+        fourcc = cv.VideoWriter_fourcc(*'avc1')
         out = cv.VideoWriter(output_path, fourcc, fps, (width, height))
+
+        out.set(cv.VIDEOWRITER_PROP_QUALITY, 70)
         
         print(f"📹 Exporting {len(frames)} frames to {output_path}...")
         

@@ -57,7 +57,7 @@ class VHS:
         h, w = r.shape
 
         for i in range(h):
-            shift = 5 + int(np.sin(i * 0.01) * 2)
+            shift = 3 + int(np.sin(i * 0.01) * 2)
             r[i] = np.roll(r[i], shift)
         
             if i % 3 == 0:

@@ -63,7 +63,7 @@ def renderVideo(args):
                 tracker.add_frame(frame)
                 processed_tracker_frame = tracker.process_current_frame(frame)
                 rgb_frame = cv.cvtColor(processed_tracker_frame, cv.COLOR_BGR2RGB)
-                output_frames.append(rgb_frame)
+                output_frames.append(processed_tracker_frame)
             
             elif "ColorChaosManipulator" in args.effects:
                 complexity = cc_manipulator.calculate_complexity(frame)
@@ -71,7 +71,7 @@ def renderVideo(args):
                 cc_manipulator.add_frame(frame)
                 processed_cc_manipulator_frame = cc_manipulator.process_current_frame(frame, complexity)
                 rgb_frame = cv.cvtColor(processed_cc_manipulator_frame, cv.COLOR_BGR2RGB)
-                output_frames.append(rgb_frame)
+                output_frames.append(processed_cc_manipulator_frame)
 
             elif "VHS" in args.effects:
                 complexity = vhs.calculate_complexity(frame)
@@ -79,7 +79,7 @@ def renderVideo(args):
                 vhs.add_frame(frame)
                 processed_vhs_frame = vhs.process_current_frame(frame, complexity)
                 rgb_frame = cv.cvtColor(processed_vhs_frame, cv.COLOR_BGR2RGB)
-                output_frames.append(rgb_frame)
+                output_frames.append(processed_vhs_frame)
         else:
             print("Undefined argument.")
             break
