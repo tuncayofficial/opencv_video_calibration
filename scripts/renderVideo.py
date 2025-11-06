@@ -38,8 +38,6 @@ def renderVideo(args):
     # ------------------- Initialize processors from here -------------------
     renderProcessor = RenderProcessor()
 
-    output_frames = []
-
     print("⚡ Processing frames at MAXIMUM SPEED (no display)...")
 
     frame_count = 0
@@ -78,16 +76,16 @@ def renderVideo(args):
         complexity = active_effect.calculate_complexity(frame)
         active_effect.add_frame(frame)
 
-        processed_frame = effectManager.process_frame(frame, complexity)
-        output_frames.append(processed_frame)
+        processed_frame = active_effect.process_current_frame(frame, complexity)
+        active_effect.processed_frames.append(processed_frame)
 
     capture.release()
 
-    if output_frames:
+    if active_effect.processed_frames:
         total_time = time.time() - start_time
-        print(f"✅ Processed {len(output_frames)} frames in {total_time:.2f}s")
-        print(f"📹 Exporting at {len(output_frames)/total_time:.1f} fps...")
-        renderProcessor.renderFrames(output_frames, "build/" + FILENAME, fps_cv)
+        print(f"✅ Processed {len(active_effect.processed_frames)} frames in {total_time:.2f}s")
+        print(f"📹 Exporting at {len(active_effect.processed_frames)/total_time:.1f} fps...")
+        renderProcessor.renderFrames(active_effect.processed_frames, "build/" + FILENAME, fps_cv)
         print("🎬 Video exported: " + FILENAME)
     else:
         print("❌ No frames processed!")

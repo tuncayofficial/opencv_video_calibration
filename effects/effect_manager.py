@@ -6,6 +6,7 @@ import numpy as np
 from effects.color_chaos_manipulator import ColorChaosManipulator
 from effects.tracker import Tracker
 from effects.vhs import VHS
+from effects.night_vision import NightVision
 
 class EffectManager:
 
@@ -13,7 +14,8 @@ class EffectManager:
         self.effects = {
             "tracker" : Tracker(),
             "cc_manipulator" : ColorChaosManipulator,
-            "vhs" : VHS()
+            "vhs" : VHS(),
+            "night_vision" : NightVision()
         }
 
         self.active_effect = None
@@ -28,11 +30,6 @@ class EffectManager:
         else:
             print("Couldn't find effect!")
             return False
-        
-    def process_frame(self, frame, complexity):
-        if self.active_effect:
-            return self.active_effect.process_current_frame(frame, complexity)
-        return frame
     
     def get_active_effect(self):
         return self.active_effect

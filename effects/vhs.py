@@ -40,7 +40,6 @@ class VHS:
             return frame 
              
         complexity = self.calculate_complexity(frame)
-        self.processed_frames.append(frame)  
         
         if complexity > self.threshold:
             return self._apply_vhs_complex(frame)

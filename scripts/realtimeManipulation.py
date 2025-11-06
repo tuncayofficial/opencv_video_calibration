@@ -43,6 +43,8 @@ def realtimeManipulation(args):
             effectManager.set_effect("cc_manipulator")
         elif "VHS" in args.effects:
             effectManager.set_effect("vhs")
+        elif "NightVision" in args.effects:
+            effectManager.set_effect("night_vision")
         else:
             print("No effect specified!")
             return
@@ -59,7 +61,7 @@ def realtimeManipulation(args):
         complexity = active_effect.calculate_complexity(frame)
         active_effect.add_frame(frame)
 
-        processed_frame = effectManager.process_frame(frame, complexity)
+        processed_frame = active_effect.process_current_frame(frame, complexity)
 
         elapsed_time = time.time() - active_effect.start_time
         fps_cv = capture.get(cv.CAP_PROP_FPS)

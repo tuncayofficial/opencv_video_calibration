@@ -1,20 +1,22 @@
 import cv2 as cv
 import numpy as np
-import time
-import math
 import random
+import time
 
-class Tracker:
+class NightVision:
     def __init__(self):
-        self.name = "Tracker Effect"
-
+        self.name = "NightVision Effect"
         self.frames = []
         self.processed_frames = []
-
         self.complexities = []
         self.threshold = None
 
         self.start_time = time.time()
+        
+        # Night vision settings
+        self.green_tint = True  # Green vs Blue night vision
+        self.intensity = 1.0    # Brightness multiplier
+        self.noise_level = 0.3  # Sensor noise amount
 
     def add_frame(self, frame):
         self.frames.append(frame)
@@ -40,27 +42,9 @@ class Tracker:
         complexity = self.calculate_complexity(frame)
         
         if complexity > self.threshold:
-            return self._complex_frame_effect(frame, complexity)
+            return self._apply_night_vision_look(frame)
         else:
-            return self._simple_frame_effect(frame, complexity)
+            return self._artifacts_enabled(frame)
 
-    def _complex_frame_effect(self, frame, complexity):
-        edges = cv.Canny(frame, 50, 150)
-
-        edges_rgb = cv.cvtColor(edges, cv.COLOR_GRAY2RGB)
-        
-        r_channel = random.randint(0, 255)
-        g_channel = random.randint(0, 255)
-        b_channel = random.randint(0, 255)
-
-        edges_rgb[edges > 0] = [r_channel, g_channel, b_channel]
-
-        edges_bgr = cv.cvtColor(edges_rgb, cv.COLOR_RGB2BGR)
-        return cv.addWeighted(frame, 0.5, edges_bgr, 0.5, 0)
-    
-    def _simple_frame_effect(self, frame, complexity):
-        blurred = cv.GaussianBlur(frame, (5, 5), 0)
-        edges = cv.Canny(blurred, 50, 150)
-
-        edges_bgr = cv.cvtColor(edges, cv.COLOR_GRAY2BGR)
-        return cv.addWeighted(frame, 0.5, edges_bgr, 0.5, 0)
+        def _apply_night_vision_look():
+            return 0
