@@ -120,9 +120,9 @@ class VHS:
         glitch_width = random.randint(10, 30) 
         glitch_height = random.randint(10, 30)
         
-        r_channel = random.randint(0, 255)
-        g_channel = random.randint(0, 255) 
-        b_channel = random.randint(0, 255)
+        r_channel = random.randint(0, 10)
+        g_channel = random.randint(0, 10) 
+        b_channel = random.randint(0, 10)
         
         frame[glitch_y:glitch_y+glitch_height, glitch_x:glitch_x+glitch_width] = [b_channel, g_channel, r_channel]
         
@@ -143,6 +143,8 @@ class VHS:
     def _apply_vhs_simple(self, frame):
         frame = self._vhs_scan_lines(frame)
         frame = self._vhs_color_bleeding(frame)
+        frame = self._vhs_noise(frame)
+
         if random.random() < 0.01:
             frame = self._vhs_tape_damage(frame)
             frame = self._vhs_tape_glitch(frame)
