@@ -52,16 +52,6 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-# ---------------------- Definitions of effects below here ----------------------
-
-tracker = Tracker()
-cc_manipulator = ColorChaosManipulator()
-
-# ---------------------- Implementations of tests below here ----------------------
-
-
-# ---------------------- Parsing args below here ----------------------
-
 if hasattr(args, "realtime") and args.realtime == "enable":
     realtimeManipulation(args)
 elif hasattr(args, "render") and args.render == "enable":
