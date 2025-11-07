@@ -12,11 +12,6 @@ class NightVision:
         self.threshold = None
 
         self.start_time = time.time()
-        
-        # Night vision settings
-        self.green_tint = True  # Green vs Blue night vision
-        self.intensity = 1.0    # Brightness multiplier
-        self.noise_level = 0.3  # Sensor noise amount
 
     def add_frame(self, frame):
         self.frames.append(frame)
