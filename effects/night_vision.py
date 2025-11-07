@@ -35,8 +35,6 @@ class NightVision:
             cv.putText(frame, "CALIBRATING...", (50, 50), 
                   cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             return frame 
-
-        complexity = self.calculate_complexity(frame)
         
         if complexity > self.threshold:
             return self._apply_night_vision_look(frame)

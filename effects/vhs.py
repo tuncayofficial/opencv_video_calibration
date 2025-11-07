@@ -38,9 +38,7 @@ class VHS:
             cv.putText(frame, "CALIBRATING...", (50, 50), 
                   cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             return frame 
-             
-        complexity = self.calculate_complexity(frame)
-        
+                     
         if complexity > self.threshold:
             return self._apply_vhs_complex(frame)
         else:
@@ -58,11 +56,19 @@ class VHS:
         h, w = r.shape
 
         for i in range(h):
-            shift = 3 + int(np.sin(i * 0.01) * 2)
+            shift = 8 + int(np.sin(i * 0.01) * 4)
             r[i] = np.roll(r[i], shift)
+
+            if shift > 0:
+                r[i, :shift] = r[i, shift] 
         
             if i % 3 == 0:
-                b[i] = np.roll(b[i], -2)
+                shift_b = -6 + int(np.cos(i * 0.02) * 3)
+                b[i] = np.roll(b[i], shift_b)
+
+            if i % 4 == 0:
+                shift_g = 2 + int(np.sin(i * 0.01) * 2)
+                g[i] = np.roll(g[i], shift_g)
     
         return cv.merge([b, g, r])
     
@@ -83,7 +89,7 @@ class VHS:
                 probability = max(0, 1 - distance/5)
 
                 if random.random() < probability:
-                    frame[i, j] = np.random.randint(0, 255, 3)
+                    frame[i, j] = np.random.randint(0, 128, 3)
 
         return frame
     
@@ -134,7 +140,7 @@ class VHS:
         frame = self._vhs_noise(frame)
         frame = self._vhs_head_clog(frame)
 
-        if random.random() < 0.5:
+        if random.random() < 0.000000000000005:
             frame = self._vhs_tape_damage(frame)
             frame = self._vhs_tape_glitch(frame)
 
@@ -145,7 +151,7 @@ class VHS:
         frame = self._vhs_color_bleeding(frame)
         frame = self._vhs_noise(frame)
 
-        if random.random() < 0.01:
+        if random.random() < 0.00000000001:
             frame = self._vhs_tape_damage(frame)
             frame = self._vhs_tape_glitch(frame)
         

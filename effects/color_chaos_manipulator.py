@@ -56,10 +56,7 @@ class ColorChaosManipulator:
             cv.putText(frame, "CALIBRATING...", (50, 50), 
                   cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             return frame 
-             
-        complexity = self.calculate_complexity(frame)
-        self.processed_frames.append(frame)  
-        
+                     
         if complexity > self.threshold:
             return self._complex_frame_effect(frame, complexity)
         else:
