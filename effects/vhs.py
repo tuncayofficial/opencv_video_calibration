@@ -120,12 +120,31 @@ class VHS:
         frame[glitch_y:glitch_y+glitch_height, glitch_x:glitch_x+glitch_width] = [b_channel, g_channel, r_channel]
         
         return frame
+    
+    def _barrel_distortion(self, frame, intensity):
+        h, w = frame.shape[:2]
+
+        j, i = np.meshgrid(np.arange(w), np.arange(h))
+
+        x = ( j - w/2 ) / (w/2)
+        y = ( i - h/2 ) / (h/2)
+
+        r = np.sqrt(x*x + y*y)
+        distortion = 1.0 + intensity * r**2
+
+        x_distorted = x * distortion
+        y_distorted = y * distortion
+
+        map_x = (x_distorted * (w/2)) + w/2
+        map_y = (y_distorted * (h/2)) + h/2
+
+        return cv.remap(frame, map_x.astype(np.float32), map_y.astype(np.float32), cv.INTER_LINEAR)
 
     def _apply_vhs_complex(self, frame):
         frame = self._vhs_scan_lines(frame)
         frame = self._vhs_color_bleeding(frame)
-        frame = self._vhs_noise(frame)
         frame = self._vhs_head_clog(frame)
+        frame = self._barrel_distortion(frame, 0.1)
 
         if random.random() < 0.000000000000005:
             frame = self._vhs_tape_damage(frame)
@@ -136,7 +155,7 @@ class VHS:
     def _apply_vhs_simple(self, frame):
         frame = self._vhs_scan_lines(frame)
         frame = self._vhs_color_bleeding(frame)
-        frame = self._vhs_noise(frame)
+        frame = self._barrel_distortion(frame, 0.1)
 
         if random.random() < 0.00000000001:
             frame = self._vhs_tape_damage(frame)

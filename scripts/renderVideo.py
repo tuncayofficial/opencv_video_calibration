@@ -17,6 +17,7 @@ from effects.effect_manager import EffectManager
 from processors.render_processor import RenderProcessor
 
 def renderVideo(args):
+    # ------------------- Initialize file from here -------------------
     ASSETS_PATH = 'assets/'
     FILENAME = "video_" + str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + ".mp4"
 
@@ -41,7 +42,6 @@ def renderVideo(args):
     print("⚡ Processing frames at MAXIMUM SPEED (no display)...")
 
     frame_count = 0
-    start_time = time.time()
 
     while True:
         isTrue, frame = capture.read()  
@@ -54,7 +54,7 @@ def renderVideo(args):
         frame_count += 1
         
         if frame_count % 30 == 0:
-            elapsed = time.time() - start_time
+            elapsed = time.time() - active_effect.start_time
             fps = frame_count / elapsed if elapsed > 0 else 0
             print(f"📊 Processed {frame_count} frames ({fps:.1f} fps)")
         
@@ -86,7 +86,7 @@ def renderVideo(args):
     capture.release()
 
     if active_effect.processed_frames:
-        total_time = time.time() - start_time
+        total_time = time.time() - active_effect.start_time
         print(f"✅ Processed {len(active_effect.processed_frames)} frames in {total_time:.2f}s")
         print(f"📹 Exporting at {len(active_effect.processed_frames)/total_time:.1f} fps...")
         renderProcessor.renderFrames(active_effect.processed_frames, "build/" + FILENAME, fps_cv)

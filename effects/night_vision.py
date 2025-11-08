@@ -73,6 +73,6 @@ class NightVision:
     
     def _apply_night_vision(self, frame):
         frame = self._night_vision_overlay(frame)
-        frame = self._scan_lines(frame)
+        #frame = self._scan_lines(frame)
 
         return frame

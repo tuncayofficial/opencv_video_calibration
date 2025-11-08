@@ -25,8 +25,8 @@ def webcamManipulation(args):
     # I/O
 
     capture = cv.VideoCapture(0)
-    capture.set(cv.CAP_PROP_FRAME_WIDTH, 640)   # Width
-    capture.set(cv.CAP_PROP_FRAME_HEIGHT, 480)  # Height
+    capture.set(cv.CAP_PROP_FRAME_WIDTH, 640)
+    capture.set(cv.CAP_PROP_FRAME_HEIGHT, 480)
     output_frames = []
     FRAME_ORDER = 0
 
