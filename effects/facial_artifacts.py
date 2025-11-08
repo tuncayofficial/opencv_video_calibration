@@ -119,7 +119,7 @@ class FacialArtifacts:
         return result_frame
     
     def process_current_frame(self, frame, complexity):
-        frame = self.psychedelic_face_shift(frame)
+        frame = self.face_blur(frame)
 
         return frame
 

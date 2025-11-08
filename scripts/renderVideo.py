@@ -69,6 +69,8 @@ def renderVideo(args):
                 effectManager.set_effect("vhs")
             elif "FacialArtifacts" in args.effects:
                 effectManager.set_effect("facial_artifacts")
+            elif "NightVision" in args.effects:
+                effectManager.set_effect("night_vision")
         else:
             print("Undefined argument.")
             break
