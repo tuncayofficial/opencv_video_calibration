@@ -16,12 +16,12 @@ from scripts.webcamManipulation import webcamManipulation
 # ---------------------- Argument parser implementation below here ----------------------
 
 
-parser = argparse.ArgumentParser(description="OpenCV Visual Artifacts - Transform your videos with psychedelic effects and mathematical transformations! 🌈✨",
+parser = argparse.ArgumentParser(description="OpenCV Visual Artifacts - Transform your videos with psychedelic effects and mathematical transformations!",
     formatter_class=argparse.RawDescriptionHelpFormatter,
     epilog="""
-🌟 Examples:
-  python main.py -rtm enable          Live webcam psychedelic effects
-  python main.py -render enable       Process video files with visual artifacts
+    Examples:
+    python main.py -mode webcam --effects Tracker          Live webcam psychedelic effects
+    python main.py -mode rtm --effects ColorChaos       Process video files with visual artifacts
   
     Features:
   • Real-time complexity analysis
