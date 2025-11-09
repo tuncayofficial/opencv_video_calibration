@@ -22,7 +22,7 @@ class NightVision:
 
         if len(self.complexities) > 10 and self.threshold == None:
             self.threshold = np.mean(self.complexities)
-            print("Current Tracker threshold has set to " + str(self.threshold))
+            print("Current NightVision threshold has set to " + str(self.threshold))
 
     def calculate_complexity(self, frame):
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -34,8 +34,8 @@ class NightVision:
         if self.threshold is None:  
             cv.putText(frame, "CALIBRATING...", (50, 50), 
                   cv.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                
             return frame 
-        
         if complexity > self.threshold:
             return self._apply_night_vision(frame)
         else:
@@ -47,8 +47,9 @@ class NightVision:
         gray = cv.equalizeHist(gray)
 
         night_vision = cv.cvtColor(gray, cv.COLOR_GRAY2BGR)
-
-        night_vision[:, :, 0] = 0
+    
+        night_vision[:, :, 0] = (night_vision[:, :, 0] * 0.2).astype(np.uint8)
+        night_vision[:, :, 1] = (night_vision[:, :, 1] * 0.8    ).astype(np.uint8)
         night_vision[:, :, 2] = 0
 
         h, w = night_vision.shape[:2]
@@ -71,8 +72,28 @@ class NightVision:
         
         return np.clip(result_frame.astype(np.uint8), 0, 255)
     
+    def _barrel_distortion(self, frame, intensity):
+        h, w = frame.shape[:2]
+
+        j, i = np.meshgrid(np.arange(w), np.arange(h))
+
+        x = ( j - w/2 ) / (w/2)
+        y = ( i - h/2 ) / (h/2)
+
+        r = np.sqrt(x*x + y*y)
+        distortion = 1.0 + intensity * r**2
+
+        x_distorted = x * distortion
+        y_distorted = y * distortion
+
+        map_x = (x_distorted * (w/2)) + w/2
+        map_y = (y_distorted * (h/2)) + h/2
+
+        return cv.remap(frame, map_x.astype(np.float32), map_y.astype(np.float32), cv.INTER_LINEAR)
+    
     def _apply_night_vision(self, frame):
         frame = self._night_vision_overlay(frame)
+        frame = self._barrel_distortion(frame, 0.1)
         #frame = self._scan_lines(frame)
 
         return frame
