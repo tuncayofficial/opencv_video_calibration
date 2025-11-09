@@ -20,7 +20,7 @@ class EffectManager:
             "vhs" : VHS(),
             "night_vision" : NightVision(),
             "facial_artifacts" : FacialArtifacts(),
-            "chrome_aberration" : ChromaticAberration(),
+            "chromatic_aberration" : ChromaticAberration(),
             "none" : NoneEffect()
         }
 
