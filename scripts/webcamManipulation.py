@@ -43,6 +43,8 @@ def webcamManipulation(args):
             effectManager.set_effect("facial_artifacts")
         elif "ChromaticAberration" in args.effects:
             effectManager.set_effect("chromatic_aberration")
+        elif "None" in args.effects:
+            effectManager.set_effect("none")
         else:
             print("No effect specified!")
             return

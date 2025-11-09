@@ -9,6 +9,7 @@ from effects.vhs import VHS
 from effects.night_vision import NightVision
 from effects.facial_artifacts import FacialArtifacts
 from effects.chromatic_aberration import ChromaticAberration
+from effects.none_effect import NoneEffect
 
 class EffectManager:
 
@@ -19,7 +20,8 @@ class EffectManager:
             "vhs" : VHS(),
             "night_vision" : NightVision(),
             "facial_artifacts" : FacialArtifacts(),
-            "chrome_aberration" : ChromaticAberration()
+            "chrome_aberration" : ChromaticAberration(),
+            "none" : NoneEffect()
         }
 
         self.active_effect = None
