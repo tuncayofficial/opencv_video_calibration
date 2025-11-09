@@ -8,7 +8,7 @@ from effects.tracker import Tracker
 from effects.vhs import VHS
 from effects.night_vision import NightVision
 from effects.facial_artifacts import FacialArtifacts
-from effects.chromatic_aberration import ChromeAberration
+from effects.chromatic_aberration import ChromaticAberration
 
 class EffectManager:
 
@@ -19,7 +19,7 @@ class EffectManager:
             "vhs" : VHS(),
             "night_vision" : NightVision(),
             "facial_artifacts" : FacialArtifacts(),
-            "chrome_aberration" : ChromeAberration()
+            "chrome_aberration" : ChromaticAberration()
         }
 
         self.active_effect = None
