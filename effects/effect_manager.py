@@ -26,14 +26,26 @@ class EffectManager:
             "none" : NoneEffect()
         }
 
-        self.effect_functions = {
-            "facial_artifacts" : {
-                "blur_face",
-                "blur_eyes",
-                "psychedelic_face_shift",
-                "psychedelic_eye_shift"
-            }
+        self.effects_functions = {
+            "Tracker" : [],
+            "ColorChaos" : [
+                "channel_swap","color_blast","hue_shift","sine_distortion","rgb_split","channel_shifting","kaleidoscope"
+                ],
+            "VHS" : [
+                "vhs_scan_lines","vhs_color_bleeding","vhs_noise","vhs_head_clog","vhs_tape_damage","vhs_tape_glitch","vhs_barrel_distortion"
+                ],
+            "FacialArtifacts" : [
+                "blur_face","blur_eyes","psychedelic_face_shift","psychedelic_eye_shift"
+                ],
+            "NightVision" : 
+            ["night_vision_overlay","night_vision_scan_lines","night_vision_barrel_distortion"
+             ],
+            "Grunge" : [
+                "grunge_bleach_bypass","emo_bloom_effect","washed_emo_layers","burnify"
+                ]
         }
+
+        self.active_functions = ["channel_swap","color_blast","hue_shift","sine_distortion","rgb_split","channel_shifting","kaleidoscope","blur_face","blur_eyes","psychedelic_face_shift","psychedelic_eye_shift","vhs_scan_lines","vhs_color_bleeding","vhs_noise","vhs_head_clog","vhs_tape_damage","vhs_tape_glitch","barrel_distortion","night_vision_overlay","night_vision_scan_lines","night_vision_barrel_distortion","grunge_bleach_bypass","emo_bloom_effect","washed_emo_layers","burnify"]
 
         self.active_effect = None
         self.active_effect_function = None
@@ -48,6 +60,28 @@ class EffectManager:
         else:
             print("Couldn't find effect!")
             return False
+        
+    def process_frame(self, frame, complexity, args):
+        if not self.active_effect:
+            return frame
+            
+        result = frame.copy()
+        
+        if args.functions:
+            for func_name in args.functions:
+                try:
+                    method = getattr(self.active_effect, func_name)
+                    result = method(result)
+                    print(f"Called {func_name}()")
+                except AttributeError:
+                    print(f"{func_name}() not found in {self.active_effect.__class__.__name__}")
+                except Exception as e:
+                    print(f"Error in {func_name}: {e}")
+        else:
+            if hasattr(self.active_effect, 'process_current_frame'):
+                result = self.active_effect.process_current_frame(result, complexity)
+        
+        return result
     
     def get_active_effect(self):
         return self.active_effect

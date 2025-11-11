@@ -12,6 +12,8 @@ from processors.render_processor import RenderProcessor
 from scripts.renderVideo import renderVideo
 from scripts.realtimeManipulation import realtimeManipulation
 from scripts.webcamManipulation import webcamManipulation
+from scripts.listEffects import listEffects
+from scripts.listFunctions import listFunctions
 
 # ---------------------- Argument parser implementation below here ----------------------
 
@@ -33,7 +35,6 @@ parser = argparse.ArgumentParser(description="OpenCV Visual Artifacts - Transfor
 parser.add_argument(
     "-mode", "--mode", 
     type=str,
-    required=True,
     choices=['render','rtm','webcam'],
     help="Sets the mode to specified argument"
 )
@@ -41,9 +42,27 @@ parser.add_argument(
 parser.add_argument(
     "-effects", "--effects", 
     nargs='+',
-    required=True,
-    choices=['Tracker','ColorChaos', 'VHS',"NightVision",'FacialArtifacts','ChromaticAberration','Grunge','None'], 
+    choices=['Tracker','ColorChaos', 'VHS',"NightVision",'FacialArtifacts','FaceBlur','EyeBlur','ChromaticAberration','Grunge','None'], 
     help="Chooses effects to be applied"
+)
+
+parser.add_argument(
+    "-functions", "--functions",
+    nargs='*', 
+    help="Specific functions to call (e.g., face_blur psychedelic_eye_shift)"
+)
+
+parser.add_argument(
+    "-list", "--list", 
+    type=str,
+    choices=["effects","functions"],
+    help="Lists the given argument"
+)
+
+parser.add_argument(
+    "--debug", 
+    action = "store_true", 
+    help="Enable debug mode for RTM"
 )
 
 args = parser.parse_args()
@@ -54,5 +73,9 @@ elif hasattr(args, "mode") and args.mode == "render":
     renderVideo(args)
 elif hasattr(args, "mode") and args.mode == "webcam":
     webcamManipulation(args)
+elif hasattr(args, "list") and args.list == "effects":
+    listEffects(args)
+elif hasattr(args, "list") and args.list == "functions":
+    listFunctions(args)
 else :
     print("Undefined argument!")
