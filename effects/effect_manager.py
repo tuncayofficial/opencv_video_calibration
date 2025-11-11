@@ -42,7 +42,8 @@ class EffectManager:
              ],
             "Grunge" : [
                 "grunge_bleach_bypass","emo_bloom_effect","washed_emo_layers","burnify"
-                ]
+                ],
+            "ChromaticAberration" : []
         }
 
         self.active_functions = ["channel_swap","color_blast","hue_shift","sine_distortion","rgb_split","channel_shifting","kaleidoscope","blur_face","blur_eyes","psychedelic_face_shift","psychedelic_eye_shift","vhs_scan_lines","vhs_color_bleeding","vhs_noise","vhs_head_clog","vhs_tape_damage","vhs_tape_glitch","barrel_distortion","night_vision_overlay","night_vision_scan_lines","night_vision_barrel_distortion","grunge_bleach_bypass","emo_bloom_effect","washed_emo_layers","burnify"]
@@ -50,6 +51,8 @@ class EffectManager:
         self.active_effect = None
         self.active_effect_function = None
         self.effect_history = []
+        self.effect_functions_history = []
+        self.toggled = True
 
     def set_effect(self, effect_name):
         if effect_name in self.effects:
@@ -70,9 +73,11 @@ class EffectManager:
         if args.functions:
             for func_name in args.functions:
                 try:
+                    if func_name not in self.effect_functions_history:
+                        self.effect_functions_history.append(func_name)
                     method = getattr(self.active_effect, func_name)
                     result = method(result)
-                    print(f"Called {func_name}()")
+                    #print(f"Called {func_name}()")
                 except AttributeError:
                     print(f"{func_name}() not found in {self.active_effect.__class__.__name__}")
                 except Exception as e:
