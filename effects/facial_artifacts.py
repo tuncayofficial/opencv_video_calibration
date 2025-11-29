@@ -4,10 +4,10 @@ import time
 import math
 import random
 
-from processors.face_detection import FateDetector
+from processors.face_detection import FaceDetector
 from effects.color_chaos_manipulator import ColorChaosManipulator
 
-faceDetector = FateDetector()
+faceDetector = FaceDetector()
 color_chaos = ColorChaosManipulator()
 
 class FacialArtifacts:
@@ -145,9 +145,10 @@ class FacialArtifacts:
                 if img is None:
                     print(f"Error: Could not load image {self.stored_image_path} with any common extension")
                     continue   
+
                 img_resized = cv.resize(img, (w, h))
 
-                region = result_frame[y:y+h+10, x:x+w]
+                region = result_frame[y:y+h, x:x+w]
                 blended_region = cv.addWeighted(region, 0, img_resized, 1, 0)
 
                 result_frame[y:y+h, x:x+w] = blended_region

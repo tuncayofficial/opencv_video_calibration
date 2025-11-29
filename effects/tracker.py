@@ -8,9 +8,9 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from processors.face_detection import FateDetector
+from processors.face_detection import FaceDetector
 
-faceDetector = FateDetector()
+faceDetector = FaceDetector()
 
 class Tracker:
     def __init__(self):
